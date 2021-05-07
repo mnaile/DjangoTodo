@@ -145,8 +145,8 @@ SIMPLE_JWT = {
 
     'AUTH_HEADER_TYPES': ('Bearer',),   #Authorization: Bearer <token> ('Bearer', 'JWT')
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-    'USER_ID_FIELD': 'email',  #The database field from the user model that will be included in generated tokens to identify users.
-    'USER_ID_CLAIM': 'email',  #value of 'user_id' would mean generated tokens include a “user_id” claim that contains the user’s identifier.
+    'USER_ID_FIELD': 'username',  #The database field from the user model that will be included in generated tokens to identify users.
+    'USER_ID_CLAIM': 'username',  #value of 'user_id' would mean generated tokens include a “user_id” claim that contains the user’s identifier.
 
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',), #token_type
     'TOKEN_TYPE_CLAIM': 'token_type',  #The claim name that is used to store a token’s type

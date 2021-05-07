@@ -41,7 +41,7 @@ class LoginView(TokenObtainPairView):
         data = data.data
 
         access_token = jwt_decode_handler(data.get("access"))
-        user = User.objects.filter(email=access_token.get("email")).last()
+        user = User.objects.filter(username=access_token.get("username")).last()
         if not user:
             return Response({"error":True, "message":"No such a user"}, status=status.HTTP_404_NOT_FOUND)
         

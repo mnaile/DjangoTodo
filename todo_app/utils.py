@@ -25,7 +25,7 @@ def check_token(request, pk=False):
     token = request.headers.get("Authorization").split(" ")[1]
     access_token = jwt_decode_handler(token)
 
-    user = User.objects.filter(email=access_token.get("email")).last()
+    user = User.objects.filter(username=access_token.get("username")).last()
     if pk:
         todo = Todo.objects.filter(id=pk, user_id=user.id).last()
         return todo
