@@ -1,9 +1,10 @@
 from django.urls import path, include
-from todo_app.views import CreateUserView, LoginView, RefreshTokenView, TodoView, TodoOperationsView
+from todo_app.views import CreateUserView, LoginView, RefreshTokenView, TodoView, TodoOperationsView, UserDetailView
 
 urlpatterns = [
     
     path('register/', CreateUserView.as_view()),
+    path('user/',UserDetailView.as_view()),
     path('login/', LoginView.as_view()),
     path('refresh-token/', RefreshTokenView.as_view()),
      # POST, GET all todos

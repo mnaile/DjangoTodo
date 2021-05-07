@@ -1,4 +1,6 @@
 
+from django.contrib.auth import models
+from django.db.models import fields
 from todo_app.models import Todo
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -26,6 +28,11 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validate_data.get('password'))
         user.save()
         return user
+
+class UserDetail(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "first_name", "last_name", "email"]
 
 
 class TodoSerializer(serializers.ModelSerializer):

@@ -4,7 +4,7 @@ from re import I
 from todo_app.models import Todo
 from todo_app.utils import check_token, jwt_decode_handler
 from django.shortcuts import render
-from todo_app.serializers import TodoSerializer, UserSerializer
+from todo_app.serializers import TodoSerializer, UserSerializer, UserDetail
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -56,6 +56,18 @@ class RefreshTokenView(TokenRefreshView):
         data = data.data
 
         return Response(data)
+
+
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = check_token(request)
+        user_data = UserDetail(user).data
+        return Response(user_data)
+
+
+        
 
 
 class TodoView(APIView):
