@@ -34,7 +34,8 @@ class CreateUserView(APIView):
 
 
 class LoginView(TokenObtainPairView):
-
+    permission_classes = (AllowAny,)
+    
     def post(self, request, *args, **kwargs):
         data = super().post(request, *args, **kwargs)
 
