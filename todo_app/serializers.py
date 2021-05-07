@@ -1,6 +1,5 @@
-from django.db.models import fields
+
 from todo_app.models import Todo
-from django.contrib.auth import models
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth import password_validation

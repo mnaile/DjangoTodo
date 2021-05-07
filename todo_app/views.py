@@ -2,7 +2,7 @@ from functools import partial
 from os import access, stat
 from re import I
 from todo_app.models import Todo
-from todo_app.utils import jwt_decode_handler
+from todo_app.utils import check_token, jwt_decode_handler
 from django.shortcuts import render
 from todo_app.serializers import TodoSerializer, UserSerializer
 from rest_framework.views import APIView
@@ -61,18 +61,10 @@ class RefreshTokenView(TokenRefreshView):
 class TodoView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def check_token(self,request):
-        token = request.headers.get("Authorization").split(" ")[1]
-        access_token = jwt_decode_handler(token)
-        user = User.objects.filter(email=access_token.get("email")).last()
-        if not user:
-            return Response({"error":True, "message":"No such a user"}, status=status.HTTP_404_NOT_FOUND)
-        return user
-
     def post(self, request):
 
         data = request.data
-        user = self.check_token(request)
+        user = check_token(request)
         
         data["user_id"] = user.id
         serializer = TodoSerializer(data=data)
@@ -86,7 +78,7 @@ class TodoView(APIView):
 
     def get(self, request):
 
-        user = self.check_token(request)
+        user = check_token(request)
 
         todos = Todo.objects.filter(user_id=user.id).all()
         if not todos:
@@ -99,28 +91,18 @@ class TodoView(APIView):
 
 class TodoOperationsView(APIView):
 
-    def check_token(self,request, pk):
-        token = request.headers.get("Authorization").split(" ")[1]
-        access_token = jwt_decode_handler(token)
-
-        user = User.objects.filter(email=access_token.get("email")).last()
-        todo = Todo.objects.filter(id=pk, user_id=user.id).last()
-
-        return todo
-        
     def get(self, request, pk):
  
-        todo = self.check_token(request, pk)
+        todo = check_token(request, pk)
         if not todo:
             return Response({"error": True, "message": "No such a user or todo"}, status=status.HTTP_404_NOT_FOUND)
-
         serializer = TodoSerializer(todo).data
         return Response(serializer)
 
     
     def delete(self, request, pk):
         
-        todo = self.check_token(request, pk)
+        todo = check_token(request, pk)
         if not todo:
             return Response({"error": True, "message": "No such a user or todo"}, status=status.HTTP_404_NOT_FOUND)
         todo.delete()
@@ -129,7 +111,7 @@ class TodoOperationsView(APIView):
     
     def put(self, request, pk):
 
-        todo = self.check_token(request, pk)
+        todo = check_token(request, pk)
         if not todo:
             return Response({"error": True, "message": "No such a user or todo"}, status=status.HTTP_404_NOT_FOUND)
         serializer = TodoSerializer(instance=todo, data=request.data, partial=True)

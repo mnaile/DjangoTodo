@@ -102,30 +102,33 @@ REST_FRAMEWORK = {
 
 from datetime import timedelta
 
+
 ...
 
+
+#JWT stand for JSON Web Token and it is an authentication strategy used by client/server applications where the client is a Web application using JavaScript and some frontend framework like Angular, React or VueJS.The JWT is acquired by exchanging an username + password for an access token and an refresh token.
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  #which specifies how long access tokens are valid
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # how long refresh tokens are valid.
+    'ROTATE_REFRESH_TOKENS': False,   #When set to True, if a refresh token is submitted to the TokenRefreshView, a new refresh token will be returned along with the new access token. 
+    'BLACKLIST_AFTER_ROTATION': True,  #refresh tokens submitted to the TokenRefreshView to be added to the blacklist 
     'UPDATE_LAST_LOGIN': False,
 
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUDIENCE': None,
-    'ISSUER': None,
+    'ALGORITHM': 'HS256',   #TWO types either HMAC  or RSA for HMAC 'HS256', 'HS384', 'HS512: SIGNING_KEY setting will be used as both the signing key and the verifying key.  asymmetric RSA RS256', 'RS384', 'RS512' SIGNING_KEY setting must be set to a string that contains an RSA private key. Likewise, the VERIFYING_KEY
+    'SIGNING_KEY': SECRET_KEY,  #content of generated tokens.
+    'VERIFYING_KEY': None,   #The verifying key which is used to verify the content of generated tokens
+    'AUDIENCE': None,   #The audience claim to be included in generated tokens and/or validated in decoded tokens
+    'ISSUER': None,  #ssuer claim to be included in generated tokens 
 
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_TYPES': ('Bearer',),   #Authorization: Bearer <token> ('Bearer', 'JWT')
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-    'USER_ID_FIELD': 'email',
-    'USER_ID_CLAIM': 'email',
+    'USER_ID_FIELD': 'email',  #The database field from the user model that will be included in generated tokens to identify users.
+    'USER_ID_CLAIM': 'email',  #value of 'user_id' would mean generated tokens include a “user_id” claim that contains the user’s identifier.
 
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',), #token_type
+    'TOKEN_TYPE_CLAIM': 'token_type',  #The claim name that is used to store a token’s type
 
-    'JTI_CLAIM': 'jti',
+    'JTI_CLAIM': 'jti',   #The claim name that is used to store a token’s unique identifier.
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
