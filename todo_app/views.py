@@ -46,6 +46,13 @@ class LoginView(TokenObtainPairView):
         if not user:
             return Response({"error":True, "message":"No such a user"}, status=status.HTTP_404_NOT_FOUND)
         
+        serializer = UserDetail(user)
+
+        todos =  Todo.objects.filter(user_id=user.id).all()
+        todos = TodoSerializer(todos, many=True).data
+
+        data["user"] = serializer.data
+        data["todos"] = todos
         return Response(data)
 
 
